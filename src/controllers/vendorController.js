@@ -1,5 +1,6 @@
 const vendorService = require('../services/vendorService');
 const { vendorSchema, menuItemSchema } = require('../validators/vendorValidator');
+const response = require('../utils/response');
 
 exports.createVendor = async (req, res, next) => {
   try {
@@ -7,7 +8,7 @@ exports.createVendor = async (req, res, next) => {
     if (error) return res.status(400).json({ error: error.details[0].message });
 
     const vendor = await vendorService.createVendor(req.body);
-    res.status(201).json(vendor);
+    return response.success(res, 'Vendor created successfully', vendor, 201);
   } catch (err) {
     next(err);
   }
@@ -22,8 +23,8 @@ exports.addMenuItem = async (req, res, next) => {
       return res.status(403).json({ error: 'Forbidden' });
     }
 
-    const vendor = await vendorService.addMenuItem(req.params.id, req.body);
-    res.json(vendor);
+    const updatedVendor = await vendorService.addMenuItem(req.params.id, req.body);
+    return response.success(res, 'Menu item added successfully', updatedVendor);
   } catch (err) {
     next(err);
   }
