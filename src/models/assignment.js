@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const AssignmentSchema = new mongoose.Schema({
   arenaId: { type: mongoose.Schema.Types.ObjectId, ref: 'Arena', required: true },
   vendorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor', required: true },
-  pickupSlotId: { type: String, required: true }
+  pickupSlotId: { type: mongoose.Schema.Types.ObjectId, required: true }
 });
 
 // Compound index to prevent duplicate assignments
