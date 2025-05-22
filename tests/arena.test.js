@@ -29,14 +29,15 @@ describe('Arena API Tests', () => {
     });
 
     const vendor = await Vendor.create({ name: 'Vendor X', email: 'vendorx@test.com' });
-    await Assignment.create({ arenaId: arena._id, vendorId: vendor._id, pickupSlotId: 'Gate A' });
+    const gateASlot = arena.pickupSlots.find(slot => slot.name === 'Gate A');
+    await Assignment.create({ arenaId: arena._id, vendorId: vendor._id, pickupSlotId: gateASlot._id });
 
     const res = await request(app)
       .get(`/api/arena/${arena._id}/vendors?page=1&limit=1`)
       .set('Authorization', `Bearer ${testAdminToken}`);
 
     expect(res.statusCode).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body.length).toBeLessThanOrEqual(1);
+    expect(Array.isArray(res.body.data)).toBe(true);
+    expect(res.body.data.length).toBeLessThanOrEqual(1);
   });
 });
