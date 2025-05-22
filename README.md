@@ -137,7 +137,7 @@ Use these examples to test your API endpoints from Swagger UI. In some cases, yo
 }
 ```
 
-### ✅ POST `/api/assign`
+### POST `/api/assign`
 
 > Replace `arenaId`, `vendorId`, and `pickupSlotId` with real ObjectIds from your DB.
 
@@ -149,7 +149,7 @@ Use these examples to test your API endpoints from Swagger UI. In some cases, yo
 }
 ```
 
-### ✅ POST `/api/vendor/{id}/menu`
+### POST `/api/vendor/{id}/menu`
 
 > Replace `{id}` in the path with a real vendor ID from your DB.
 
@@ -162,7 +162,7 @@ Use these examples to test your API endpoints from Swagger UI. In some cases, yo
 }
 ```
 
-### ✅ GET `/api/arena/{id}/vendors`
+### GET `/api/arena/{id}/vendors`
 
 > Replace `{id}` with a real arena ID.
 
