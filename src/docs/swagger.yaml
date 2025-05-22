@@ -1,0 +1,188 @@
+
+openapi: 3.0.0
+info:
+  title: Arena Vendor Management API
+  version: 1.0.0
+  description: Backend API for managing arenas, vendors, pickup slots, assignments, and menu items.
+servers:
+  - url: http://localhost:3000
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Arena:
+      type: object
+      required:
+        - name
+        - date
+        - pickupSlots
+      properties:
+        name:
+          type: string
+        date:
+          type: string
+          format: date
+        pickupSlots:
+          type: array
+          items:
+            $ref: '#/components/schemas/PickupSlot'
+
+    PickupSlot:
+      type: object
+      required:
+        - name
+        - capacity
+      properties:
+        name:
+          type: string
+        capacity:
+          type: integer
+
+    Vendor:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        status:
+          type: string
+          enum: [active, inactive]
+        menu:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuItem'
+
+    MenuItem:
+      type: object
+      required:
+        - title
+        - price
+        - category
+        - isAvailable
+      properties:
+        title:
+          type: string
+        price:
+          type: number
+        category:
+          type: string
+        isAvailable:
+          type: boolean
+
+    Assignment:
+      type: object
+      required:
+        - arenaId
+        - vendorId
+        - pickupSlotId
+      properties:
+        arenaId:
+          type: string
+        vendorId:
+          type: string
+        pickupSlotId:
+          type: string
+
+security:
+  - bearerAuth: []
+
+paths:
+  /api/arena:
+    post:
+      tags:
+        - Arena
+      summary: Create a new arena with one or more pickup slots
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Arena'
+      responses:
+        '200':
+          description: Arena created successfully
+
+  /api/arena/{id}/vendors:
+    get:
+      tags:
+        - Arena
+      summary: Get all vendors assigned to a specific arena
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of assigned vendors with their pickup slots
+
+  /api/vendor:
+    post:
+      tags:
+        - Vendor
+      summary: Create a new vendor
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vendor'
+      responses:
+        '200':
+          description: Vendor created successfully
+
+  /api/vendor/{id}/menu:
+    post:
+      tags:
+        - Vendor
+      summary: Add a menu item to a vendor's menu
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuItem'
+      responses:
+        '200':
+          description: Menu item added to vendor
+
+  /api/assign:
+    post:
+      tags:
+        - Assignment
+      summary: Assign a vendor to a pickup slot in a specific arena
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Assignment'
+      responses:
+        '200':
+          description: Vendor assigned successfully
