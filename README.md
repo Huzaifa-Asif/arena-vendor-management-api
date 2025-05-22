@@ -109,6 +109,68 @@ You can view the interactive ERD and database relationships here:
 [View Database Diagram](https://dbdocs.io/huzaifa8580/arena-vendor-management-api?view=relationships)
 
 
+## Sample API Payloads
+
+Use these examples to test your API endpoints from Swagger UI. In some cases, you will need to replace placeholder ObjectIds (`arenaId`, `vendorId`, `pickupSlotId`) with actual IDs retrieved from your database (e.g., via MongoDB Compass or Robo 3T).
+
+### POST `/api/arena`
+
+```json
+{
+  "name": "Summer Food Festival",
+  "date": "2024-08-10",
+  "pickupSlots": [
+    { "name": "North Gate", "capacity": 100 },
+    { "name": "VIP Lounge", "capacity": 30 },
+    { "name": "Main Entrance", "capacity": 50 }
+  ]
+}
+```
+
+### POST `/api/vendor`
+
+```json
+{
+  "name": "Tasty Bites",
+  "email": "tasty@bites.com",
+  "status": "active"
+}
+```
+
+### ✅ POST `/api/assign`
+
+> Replace `arenaId`, `vendorId`, and `pickupSlotId` with real ObjectIds from your DB.
+
+```json
+{
+  "arenaId": "64f8b6c4f1abc12345678901",
+  "vendorId": "64f8b6e9c7efc23456789012",
+  "pickupSlotId": "64f8b70ad1f9a34567890123"
+}
+```
+
+### ✅ POST `/api/vendor/{id}/menu`
+
+> Replace `{id}` in the path with a real vendor ID from your DB.
+
+```json
+{
+  "title": "Grilled Chicken Sandwich",
+  "category": "Main Course",
+  "price": 8.99,
+  "isAvailable": true
+}
+```
+
+### ✅ GET `/api/arena/{id}/vendors`
+
+> Replace `{id}` with a real arena ID.
+
+```
+/api/arena/64f8b6c4f1abc12345678901/vendors?page=1&limit=10
+```
+
+
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).  
