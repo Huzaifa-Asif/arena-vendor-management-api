@@ -13,7 +13,6 @@ A scalable, secure backend API built with Node.js, Express, and MongoDB for mana
 - Swagger documentation at `/`
 - Jest tests with Supertest for API routes
 
----
 
 ## Tech Stack
 
@@ -25,7 +24,6 @@ A scalable, secure backend API built with Node.js, Express, and MongoDB for mana
 - Helmet, xss-clean, mongo-sanitize, rate-limit for Security
 - Jest + Supertest for Testing
 
----
 
 ## Getting Started
 
@@ -60,7 +58,6 @@ npm run dev
 
 Visit [http://localhost:3000/](http://localhost:3000/) for Swagger UI.
 
----
 
 ## Project Structure
 
@@ -86,7 +83,6 @@ arena-vendor-management-api/
 ├── README.md
 ```
 
----
 
 ## API Endpoints
 
@@ -98,7 +94,6 @@ All endpoints are prefixed with `/api`
 - `POST /api/vendor/:id/menu` – Add Menu Item
 - `POST /api/assign` – Assign Vendor to Slot
 
----
 
 ## Running Tests
 
@@ -106,7 +101,13 @@ All endpoints are prefixed with `/api`
 npm test
 ```
 
----
+
+## Database Schema
+
+You can view the interactive ERD and database relationships here:
+
+[View Database Diagram](https://dbdocs.io/huzaifa8580/arena-vendor-management-api?view=relationships)
+
 
 ## License
 
