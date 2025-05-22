@@ -1,22 +1,27 @@
-const Arena = require('../models/arena');
-const Assignment = require('../models/assignment');
-const Vendor = require('../models/vendor');
+const arenaService = require('../services/arenaService');
+const arenaValidator = require('../validators/arenaValidator');
 
-exports.createArena = async (req, res) => {
+exports.createArena = async (req, res, next) => {
   try {
-    const arena = await Arena.create(req.body);
-    res.json(arena);
+    const { error } = arenaValidator.validate(req.body);
+    if (error) return res.status(400).json({ error: error.details[0].message });
+
+    const arena = await arenaService.createArena(req.body);
+    res.status(201).json(arena);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.getVendorsByArena = async (req, res) => {
+exports.getVendorsByArena = async (req, res, next) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
     const arenaId = req.params.id;
-    const assignments = await Assignment.find({ arenaId }).populate('vendorId');
-    res.json(assignments);
+
+    const data = await arenaService.getVendorsByArena(arenaId, page, limit);
+    res.json(data);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };

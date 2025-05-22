@@ -1,7 +1,6 @@
-
 # Arena Vendor Management API
 
-A backend-only API built with Node.js, Express, and MongoDB for managing arenas, pickup slots, vendors, assignments, and menu items.
+A scalable, secure backend API built with Node.js, Express, and MongoDB for managing arenas, pickup slots, vendors, assignments, and menu items.
 
 ## Features
 
@@ -9,17 +8,24 @@ A backend-only API built with Node.js, Express, and MongoDB for managing arenas,
 - Arena creation with pickup slots
 - Vendor registration and menu management
 - Vendor-slot assignment with conflict prevention
-- Swagger documentation available at `/`
+- Pagination for arena vendor listing
+- Centralized error handling and validation
+- Swagger documentation at `/`
+- Jest tests with Supertest for API routes
 
+---
 
 ## Tech Stack
 
-- Node.js
-- Express.js
+- Node.js, Express.js
 - MongoDB (Mongoose)
-- JWT Auth
-- Swagger for API docs
+- JWT for Auth
+- Swagger for API Docs
+- Joi for Validation
+- Helmet, xss-clean, mongo-sanitize, rate-limit for Security
+- Jest + Supertest for Testing
 
+---
 
 ## Getting Started
 
@@ -38,15 +44,13 @@ npm install
 
 ### 3. Create Environment File
 
-Create a `.env` file in the root with the following:
+Create a `.env` file in the root:
 
 ```env
 PORT=3000
 MONGO_URI=mongodb://localhost:27017/arena-api
-JWT_SECRET=
+JWT_SECRET=supersecrettoken
 ```
-
-Or use the provided `sample.env` and add the values
 
 ### 4. Run the Server
 
@@ -54,59 +58,55 @@ Or use the provided `sample.env` and add the values
 npm run dev
 ```
 
-Visit `http://localhost:3000/` for Swagger UI.
+Visit [http://localhost:3000/](http://localhost:3000/) for Swagger UI.
 
+---
 
 ## Project Structure
 
 ```
 arena-vendor-management-api/
+├── bin/                    # Startup script
 ├── src/
-│   ├── app.js
-│   ├── config/
-│   │   └── db.js
-│   ├── controllers/
-│   │   ├── arenaController.js
-│   │   ├── assignController.js
-│   │   └── vendorController.js
-│   ├── docs/
-│   │   └── swagger.yaml
-│   ├── middleware/
-│   │   └── auth.js
-│   ├── models/
-│   │   ├── arena.js
-│   │   ├── assignment.js
-│   │   ├── menuItem.js
-│   │   └── vendor.js
-│   ├── routes/
-│   │   ├── arena.js
-│   │   ├── assign.js
-│   │   ├── index.js
-│   │   └── vendor.js
-│   └── services/
-│       ├── arenaService.js
-│       └── vendorService.js
-├── bin/
-│   └── www
+│   ├── app.js              # Main App
+│   ├── config/             # DB connection
+│   ├── constants/          # Roles and Statuses
+│   ├── controllers/        # Request Handlers
+│   ├── docs/               # Swagger Docs
+│   ├── middleware/         # Auth, RBAC, Error
+│   ├── models/             # Mongoose Schemas
+│   ├── routes/             # Express Routers
+│   ├── services/           # Business Logic
+│   └── validators/         # Joi Schemas
+├── tests/                  # Jest Tests
+├── sample.env
 ├── .env
 ├── .gitignore
 ├── package.json
 ├── README.md
 ```
 
+---
 
 ## API Endpoints
 
 All endpoints are prefixed with `/api`
 
-- `POST /api/arena`
-- `GET /api/arena/:id/vendors`
-- `POST /api/vendor`
-- `POST /api/vendor/:id/menu`
-- `POST /api/assign`
+- `POST /api/arena` – Create Arena
+- `GET /api/arena/:id/vendors` – List Assigned Vendors (with `?page` & `?limit`)
+- `POST /api/vendor` – Create Vendor
+- `POST /api/vendor/:id/menu` – Add Menu Item
+- `POST /api/assign` – Assign Vendor to Slot
 
-See full documentation at `/`.
+---
 
+## Running Tests
+
+```bash
+npm test
+```
+
+---
 
 ## License
 

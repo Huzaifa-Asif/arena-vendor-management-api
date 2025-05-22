@@ -1,16 +1,11 @@
 const mongoose = require('mongoose');
-
-const MenuItemSchema = new mongoose.Schema({
-  category: String,
-  title: String,
-  price: Number,
-  isAvailable: Boolean,
-});
+const MenuItemSchema = require('./menuItem');
+const { ACTIVE } = require('../constants/statuses');
 
 const VendorSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  status: { type: String, enum: ['active', 'inactive'], default: 'active' },
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  status: { type: String, enum: ['active', 'inactive'], default: ACTIVE },
   menu: [MenuItemSchema],
 });
 

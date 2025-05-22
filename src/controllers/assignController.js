@@ -1,19 +1,19 @@
 const Assignment = require('../models/assignment');
-const Vendor = require('../models/vendor');
+const vendorService = require('../services/vendorService');
 
-exports.assignVendor = async (req, res) => {
-  const { arenaId, vendorId, pickupSlotId } = req.body;
+exports.assignVendor = async (req, res, next) => {
+  try {
+    const { arenaId, vendorId, pickupSlotId } = req.body;
 
-  const vendor = await Vendor.findById(vendorId);
-  if (!vendor || vendor.status !== 'active') {
-    return res.status(400).json({ error: 'Vendor must be active' });
+    const vendor = await vendorService.getVendorIfActive(vendorId);
+    if (!vendor) return res.status(400).json({ error: 'Vendor must be active' });
+
+    const exists = await Assignment.findOne({ arenaId, vendorId, pickupSlotId });
+    if (exists) return res.status(409).json({ error: 'Duplicate assignment' });
+
+    const assignment = await Assignment.create({ arenaId, vendorId, pickupSlotId });
+    res.status(201).json(assignment);
+  } catch (err) {
+    next(err);
   }
-
-  const existing = await Assignment.findOne({ arenaId, vendorId, pickupSlotId });
-  if (existing) {
-    return res.status(409).json({ error: 'Vendor already assigned to this slot' });
-  }
-
-  const assignment = await Assignment.create({ arenaId, vendorId, pickupSlotId });
-  res.json(assignment);
 };

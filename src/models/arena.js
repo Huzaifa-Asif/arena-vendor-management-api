@@ -1,14 +1,10 @@
 const mongoose = require('mongoose');
-
-const PickupSlotSchema = new mongoose.Schema({
-  name: String,
-  capacity: Number,
-});
+const PickupSlotSchema = require('./pickupSlot');
 
 const ArenaSchema = new mongoose.Schema({
-  name: String,
-  date: Date,
-  pickupSlots: [PickupSlotSchema],
+  name: { type: String, required: true },
+  date: { type: Date, required: true },
+  pickupSlots: [PickupSlotSchema]
 });
 
 module.exports = mongoose.model('Arena', ArenaSchema);

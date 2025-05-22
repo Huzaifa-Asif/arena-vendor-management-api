@@ -1,27 +1,30 @@
-const Vendor = require('../models/vendor');
+const vendorService = require('../services/vendorService');
+const { vendorSchema, menuItemSchema } = require('../validators/vendorValidator');
 
-exports.createVendor = async (req, res) => {
+exports.createVendor = async (req, res, next) => {
   try {
-    const vendor = await Vendor.create(req.body);
-    res.json(vendor);
+    const { error } = vendorSchema.validate(req.body);
+    if (error) return res.status(400).json({ error: error.details[0].message });
+
+    const vendor = await vendorService.createVendor(req.body);
+    res.status(201).json(vendor);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.addMenuItem = async (req, res) => {
+exports.addMenuItem = async (req, res, next) => {
   try {
-    const vendor = await Vendor.findById(req.params.id);
-    if (!vendor) return res.status(404).json({ error: 'Vendor not found' });
+    const { error } = menuItemSchema.validate(req.body);
+    if (error) return res.status(400).json({ error: error.details[0].message });
 
-    if (vendor._id.toString() !== req.user.id && req.user.role !== 'admin') {
-      return res.status(403).json({ error: 'Unauthorized' });
+    if (req.user.id !== req.params.id && req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Forbidden' });
     }
 
-    vendor.menu.push(req.body);
-    await vendor.save();
+    const vendor = await vendorService.addMenuItem(req.params.id, req.body);
     res.json(vendor);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };

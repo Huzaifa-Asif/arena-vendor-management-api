@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../middleware/auth');
+const rbac = require('../middleware/rbac');
 const { createVendor, addMenuItem } = require('../controllers/vendorController');
-const auth = require('../../middleware/auth');
 
-router.post('/', auth('admin'), createVendor);
-router.post('/:id/menu', auth('vendor'), addMenuItem);
+router.post('/', auth, rbac(['admin']), createVendor);
+router.post('/:id/menu', auth, rbac(['vendor', 'admin']), addMenuItem);
 
 module.exports = router;
