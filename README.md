@@ -10,7 +10,7 @@ A scalable, secure backend API built with Node.js, Express, and MongoDB for mana
 - Vendor-slot assignment with conflict prevention
 - Pagination for arena vendor listing
 - Centralized error handling and validation
-- Swagger documentation at `/`
+- Swagger documentation at `/docs`
 - Jest tests with Supertest for API routes
 
 
@@ -56,7 +56,7 @@ JWT_SECRET=supersecrettoken
 npm run dev
 ```
 
-Visit [http://localhost:3000/](http://localhost:3000/) for Swagger UI.
+Visit [http://localhost:3000/docs](http://localhost:3000/docs) for Swagger UI.
 
 
 ## Project Structure

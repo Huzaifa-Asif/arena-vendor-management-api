@@ -25,10 +25,10 @@ app.use(rateLimit({
 
 // Swagger Docs
 const swaggerDocument = YAML.load('./src/docs/swagger.yaml');
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Routes
-app.use('/api', indexRouter);
+app.use('/', indexRouter);
 
 // Error Handling Middleware
 app.use(errorHandler);
